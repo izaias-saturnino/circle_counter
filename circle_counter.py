@@ -25,6 +25,7 @@ processing_parameters = {
         "sobel": {
             "enabled": True,
             "contrasted": False,
+            "inverted": False,
             "weight": 0.2
         },
         "inverted": True,
@@ -296,10 +297,16 @@ for file_name in files:
 
                 # if the pixel is lighter than gray, make it darker than gray in the same proportion
 
-                for i in range(sobel.shape[0]):
-                    for j in range(sobel.shape[1]):
-                        if sobel[i][j] > 128:
-                            sobel[i][j] = 255 - sobel[i][j]
+                if "inverted" in processing_parameters[parameters][parameter] and processing_parameters[parameters][parameter]["inverted"]:
+                    for i in range(sobel.shape[0]):
+                        for j in range(sobel.shape[1]):
+                            if sobel[i][j] < 128:
+                                sobel[i][j] = 255 - sobel[i][j]
+                else:
+                    for i in range(sobel.shape[0]):
+                        for j in range(sobel.shape[1]):
+                            if sobel[i][j] > 127:
+                                sobel[i][j] = 255 - sobel[i][j]
 
                 # save the image to a file
 
